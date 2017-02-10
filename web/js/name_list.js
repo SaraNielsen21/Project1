@@ -34,6 +34,223 @@ function updateTable() {
 
     })
 }
+// Called when "Add Item" button is clicked
+function showDialogAdd() {
+
+    // Print that we got here
+    console.log("Opening add item dialog");
+
+    // Clear out the values in the form.
+    // Otherwise we'll keep values from when we last
+    // opened or hit edit.
+    // I'm getting it started, you can finish.
+    $('#id').val("");
+    $('#firstName').val("");
+    $('#lastName').val("");
+    $('#email').val("");
+    $('#phone').val("");
+    $('#birthday').val("");
+
+    // Show the hidden dialog
+    $('#myModal').modal('show');
+}
+
+function validate() {
+    var firstName = $('#firstName').val();
+    var lastName = $('#lastName').val();
+    var email = $('#email').val();
+    var phone = $('#phone').val();
+    var birthday = $('#birthday').val();
+
+    var nameReg = /^[^\p{L}]{1,30}$/;
+    var emailReg = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    var phoneReg = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+    var birthdayReg = /^(19[0-9][0-9]|20[0-9][0-9])-(0[1-9]|1[1,2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
+
+    if(nameReg.test(firstName)){
+        console.log("Firstname Ok");
+        // Set style for outline of form field
+        $('#firstNameDiv').removeClass("has-error");
+        $('#firstNameDiv').addClass("has-success");
+
+        // Set the icon for the form field
+        $('#firstNameGlyph').removeClass("glyphicon-remove");
+        $('#firstNameGlyph').addClass("glyphicon-ok");
+
+        // Put in the field used by screen readers
+        $('firstNameStatus').val("(success)");
+    }
+    else{
+        console.log("Firstname Bad");
+        // Set style for outline of form field
+        $('#firstNameDiv').removeClass("has-success");
+        $('#firstNameDiv').addClass("has-error");
+
+        // Set the icon for the form field
+        $('#firstNameGlyph').removeClass("glyphicon-ok");
+        $('#firstNameGlyph').addClass("glyphicon-remove");
+
+        // Put in the field used by screen readers
+        $('firstNameStatus').val("(failure)");
+    }
+
+    //last name
+    if(nameReg.test(lastName)){
+        console.log("Lastname Ok");
+        // Set style for outline of form field
+        $('#lastNameDiv').removeClass("has-error");
+        $('#lastNameDiv').addClass("has-success");
+
+        // Set the icon for the form field
+        $('#lastNameGlyph').removeClass("glyphicon-remove");
+        $('#lastNameGlyph').addClass("glyphicon-ok");
+
+        // Put in the field used by screen readers
+        $('lastNameStatus').val("(success)");
+    }
+    else{
+        console.log("Lastname Bad");
+        // Set style for outline of form field
+        $('#lasstNameDiv').removeClass("has-success");
+        $('#lastNameDiv').addClass("has-error");
+
+        // Set the icon for the form field
+        $('#lastNameGlyph').removeClass("glyphicon-ok");
+        $('#lastNameGlyph').addClass("glyphicon-remove");
+
+        // Put in the field used by screen readers
+        $('lastNameStatus').val("(failure)");
+    }
+
+    //email
+    if(emailReg.test(email)){
+        console.log("Email Ok");
+        // Set style for outline of form field
+        $('#emailDiv').removeClass("has-error");
+        $('#emailDiv').addClass("has-success");
+
+        // Set the icon for the form field
+        $('#emailGlyph').removeClass("glyphicon-remove");
+        $('#emailGlyph').addClass("glyphicon-ok");
+
+        // Put in the field used by screen readers
+        $('emailStatus').val("(success)");
+    }
+    else{
+        console.log("Email Bad");
+        // Set style for outline of form field
+        $('#emailDiv').removeClass("has-success");
+        $('#emailDiv').addClass("has-error");
+
+        // Set the icon for the form field
+        $('#emailGlyph').removeClass("glyphicon-ok");
+        $('#emailGlyph').addClass("glyphicon-remove");
+
+        // Put in the field used by screen readers
+        $('emailStatus').val("(failure)");
+    }
+
+    //phone number
+    if(phoneReg.test(phone)){
+        console.log("Phone Number Ok");
+        // Set style for outline of form field
+        $('#phoneDiv').removeClass("has-error");
+        $('#phoneDiv').addClass("has-success");
+
+        // Set the icon for the form field
+        $('#phoneGlyph').removeClass("glyphicon-remove");
+        $('#phoneGlyph').addClass("glyphicon-ok");
+
+        // Put in the field used by screen readers
+        $('phoneStatus').val("(success)");
+    }
+    else{
+        console.log("Phone Number Bad");
+        // Set style for outline of form field
+        $('#phoneDiv').removeClass("has-success");
+        $('#phoneDiv').addClass("has-error");
+
+        // Set the icon for the form field
+        $('#phoneGlyph').removeClass("glyphicon-ok");
+        $('#phoneGlyph').addClass("glyphicon-remove");
+
+        // Put in the field used by screen readers
+        $('phoneStatus').val("(failure)");
+    }
+
+    //birthday
+    if(birthdayReg.test(birthday)){
+        console.log("Birthday Ok");
+        // Set style for outline of form field
+        $('#birthdayDiv').removeClass("has-error");
+        $('#birthdayDiv').addClass("has-success");
+
+        // Set the icon for the form field
+        $('#birthdayGlyph').removeClass("glyphicon-remove");
+        $('#birthdayGlyph').addClass("glyphicon-ok");
+
+        // Put in the field used by screen readers
+        $('birthdayStatus').val("(success)");
+    }
+    else{
+        console.log("Birthday Bad");
+        // Set style for outline of form field
+        $('#birthdayDiv').removeClass("has-success");
+        $('#birthdayDiv').addClass("has-error");
+
+        // Set the icon for the form field
+        $('#birthdayGlyph').removeClass("glyphicon-ok");
+        $('#birthdayGlyph').addClass("glyphicon-remove");
+
+        // Put in the field used by screen readers
+        $('birthdayStatus').val("(failure)");
+    }
+}
+//Called when "Save Changes" button is clicked
+function saveChanges() {
+    validate();
+    console.log("Changes Saved");
+}
+
+function clearForm() {
+    $('#firstNameDiv').removeClass("has-success");
+    $('#firstNameDiv').removeClass("has-error");
+    $('#firstNameGlyph').removeClass("glyphicon-ok");
+    $('#firstNameGlyph').removeClass("glyphicon-remove");
+
+    $('#lastNameDiv').removeClass("has-success");
+    $('#lastNameDiv').removeClass("has-error");
+    $('#lastNameGlyph').removeClass("glyphicon-ok");
+    $('#lastNameGlyph').removeClass("glyphicon-remove");
+
+    $('#emailDiv').removeClass("has-success");
+    $('#emailDiv').removeClass("has-error");
+    $('#emailGlyph').removeClass("glyphicon-ok");
+    $('#emailGlyph').removeClass("glyphicon-remove");
+
+    $('#phoneDiv').removeClass("has-success");
+    $('#phoneDiv').removeClass("has-error");
+    $('#phoneGlyph').removeClass("glyphicon-ok");
+    $('#phoneGlyph').removeClass("glyphicon-remove");
+
+    $('#birthdayDiv').removeClass("has-success");
+    $('#birthdayDiv').removeClass("has-error");
+    $('#birthdayGlyph').removeClass("glyphicon-ok");
+    $('#birthdayGlyph').removeClass("glyphicon-remove");
+
+    console.log("Form cleared");
+}
 
 // Call your code.
 updateTable();
+
+// There's a button in the form with the ID "addItem"
+// Associate the function showDialogAdd with it.
+var addItemButton = $('#addItem');
+addItemButton.on("click", showDialogAdd);
+
+var addSaveButton = $('#saveChanges');
+addSaveButton.on("click", saveChanges);
+
+var closeButton = $('#close');
+closeButton.on("click", clearForm);
