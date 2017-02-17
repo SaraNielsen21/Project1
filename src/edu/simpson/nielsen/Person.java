@@ -11,7 +11,7 @@ public class Person {
     private String last;
     private String email;
     private String phone;
-    private Date birthday;
+    private String birthday;
 
     public int getId() {return id; }
     public void setId(int id) { this.id = id; }
@@ -28,6 +28,6 @@ public class Person {
     public String getPhone() {return phone; }
     public void setPhone(String phone) {this.phone = phone; }
 
-    public Date getBirthday() {return birthday; }
-    public void setBirthday(Date birthday) {this.birthday = birthday; }
+    public String getBirthday() {return birthday; }
+    public void setBirthday(String birthday) {this.birthday = birthday; }
 }

@@ -64,7 +64,7 @@ public class PersonDAO {
                 person.setLast(rs.getString("last"));
                 person.setEmail(rs.getString("email"));
                 person.setPhone(rs.getString("phone"));
-                person.setBirthday(rs.getDate("birthday"));
+                person.setBirthday(rs.getString("birthday"));
 
                 // Add this person to the list so we can return it.
                 list.add(person);
@@ -81,5 +81,46 @@ public class PersonDAO {
         }
         // Done! Return the results
         return list;
+    }
+
+    public static void addPeople(Person person)
+    {
+        final Logger log = Logger.getLogger(PersonDAO.class.getName());
+        log.log(Level.FINE, "Add people");
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try{
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // String for our sql query
+            String sql = "insert into cis320.person (first, last, email, phone, birthday) values (?,?,?,?,?)";
+
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+
+            //set parameters
+            stmt.setString(1,person.getFirst());
+            stmt.setString(2,person.getLast());
+            stmt.setString(3,person.getEmail());
+            stmt.setString(4,person.getPhone());
+            stmt.setString(5,person.getBirthday());
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { stmt.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+            try { conn.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+
     }
 }

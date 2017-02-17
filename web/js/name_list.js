@@ -2,6 +2,7 @@
  * Created by sara.nielsen on 1/31/2017.
  */
 // Main Javascript File
+var valid_form = true;
 
 function updateTable() {
     // Here's where your code is going to go.
@@ -34,6 +35,12 @@ function updateTable() {
 
     })
 }
+
+function clearTable() {
+    $('#datatable tbody').empty();
+    console.log("Table Cleared");
+}
+
 // Called when "Add Item" button is clicked
 function showDialogAdd() {
 
@@ -56,6 +63,8 @@ function showDialogAdd() {
 }
 
 function validate() {
+    valid_form = true;
+
     var firstName = $('#firstName').val();
     var lastName = $('#lastName').val();
     var email = $('#email').val();
@@ -64,7 +73,7 @@ function validate() {
 
     var nameReg = /^[^\p{L}]{1,30}$/;
     var emailReg = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    var phoneReg = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+    var phoneReg = /^[0-9]{10}$/;
     var birthdayReg = /^(19[0-9][0-9]|20[0-9][0-9])-(0[1-9]|1[1,2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
 
     if(nameReg.test(firstName)){
@@ -82,6 +91,7 @@ function validate() {
     }
     else{
         console.log("Firstname Bad");
+        valid_form = false;
         // Set style for outline of form field
         $('#firstNameDiv').removeClass("has-success");
         $('#firstNameDiv').addClass("has-error");
@@ -110,6 +120,7 @@ function validate() {
     }
     else{
         console.log("Lastname Bad");
+        valid_form = false;
         // Set style for outline of form field
         $('#lasstNameDiv').removeClass("has-success");
         $('#lastNameDiv').addClass("has-error");
@@ -138,6 +149,7 @@ function validate() {
     }
     else{
         console.log("Email Bad");
+        valid_form = false;
         // Set style for outline of form field
         $('#emailDiv').removeClass("has-success");
         $('#emailDiv').addClass("has-error");
@@ -166,6 +178,7 @@ function validate() {
     }
     else{
         console.log("Phone Number Bad");
+        valid_form = false;
         // Set style for outline of form field
         $('#phoneDiv').removeClass("has-success");
         $('#phoneDiv').addClass("has-error");
@@ -194,6 +207,7 @@ function validate() {
     }
     else{
         console.log("Birthday Bad");
+        valid_form = false;
         // Set style for outline of form field
         $('#birthdayDiv').removeClass("has-success");
         $('#birthdayDiv').addClass("has-error");
@@ -241,6 +255,29 @@ function clearForm() {
     console.log("Form cleared");
 }
 
+<!-- AJAX Post -->
+function jqueryPostButtonAction() {
+
+    if (valid_form == true) {
+        var url = "api/name_list_edit";
+        var firstName = $("#firstName").val();
+        var lastName = $("#lastName").val();
+        var email = $("#email").val();
+        var phone = $("#phone").val();
+        var birthday = $("#birthday").val();
+
+        var dataToServer = {firstName: firstName, lastName: lastName, email: email, phone: phone, birthday: birthday};
+
+        console.log(dataToServer);
+
+        $.post(url, dataToServer, function (dataFromServer) {
+            console.log("Finished calling servlet.");
+            console.log(dataFromServer);
+        });
+    }
+    else console.log("Invalid form");
+}
+
 // Call your code.
 updateTable();
 
@@ -254,3 +291,10 @@ addSaveButton.on("click", saveChanges);
 
 var closeButton = $('#close');
 closeButton.on("click", clearForm);
+closeButton.on("click", clearTable);
+closeButton.on("click", updateTable);
+
+var saveButton = $('#saveChanges');
+saveButton.on("click", jqueryPostButtonAction);
+saveButton.on("click", clearTable);
+saveButton.on("click", updateTable);
