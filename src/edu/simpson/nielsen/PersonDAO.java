@@ -123,4 +123,39 @@ public class PersonDAO {
         }
 
     }
+
+    public static void deletePerson(String id)
+    {
+        final Logger log = Logger.getLogger(PersonDAO.class.getName());
+        log.log(Level.FINE, "Add people");
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try{
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // String for our sql query
+            String sql = "delete from cis320.person where id = ?";
+
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+
+            //set parameters
+            stmt.setString(1,id);
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { stmt.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+            try { conn.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+    }
 }

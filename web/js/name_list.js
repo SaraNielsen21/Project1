@@ -2,7 +2,6 @@
  * Created by sara.nielsen on 1/31/2017.
  */
 // Main Javascript File
-var valid_form = true;
 
 function updateTable() {
     // Here's where your code is going to go.
@@ -28,10 +27,15 @@ function updateTable() {
             row += '<td>' + email + '</td>';
             row += '<td>' + phoneDash + '</td>';
             row += '<td>' + birthday + '</td>';
+            row += "<td><button type='button' name='deleteButton' class='editButton btn' value='" + id + "'>Delete</button></td>";
             row += '</tr>';
             $('#datatable tbody').append(row);
+
+            var buttons = $(".editButton");
+            buttons.on("click", deleteItem);
+            buttons.on("click", jqueryPostButtonDelete);
         }
-        console.log("Done");
+        console.log("Table Updated");
 
     })
 }
@@ -39,6 +43,11 @@ function updateTable() {
 function clearTable() {
     $('#datatable tbody').empty();
     console.log("Table Cleared");
+}
+
+function deleteItem(e) {
+    console.debug("Delete");
+    console.debug(e.target.value);
 }
 
 // Called when "Add Item" button is clicked
@@ -58,12 +67,39 @@ function showDialogAdd() {
     $('#phone').val("");
     $('#birthday').val("");
 
+    $('#firstNameDiv').removeClass("has-success");
+    $('#firstNameDiv').removeClass("has-error");
+    $('#firstNameGlyph').removeClass("glyphicon-ok");
+    $('#firstNameGlyph').removeClass("glyphicon-remove");
+
+    $('#lastNameDiv').removeClass("has-success");
+    $('#lastNameDiv').removeClass("has-error");
+    $('#lastNameGlyph').removeClass("glyphicon-ok");
+    $('#lastNameGlyph').removeClass("glyphicon-remove");
+
+    $('#emailDiv').removeClass("has-success");
+    $('#emailDiv').removeClass("has-error");
+    $('#emailGlyph').removeClass("glyphicon-ok");
+    $('#emailGlyph').removeClass("glyphicon-remove");
+
+    $('#phoneDiv').removeClass("has-success");
+    $('#phoneDiv').removeClass("has-error");
+    $('#phoneGlyph').removeClass("glyphicon-ok");
+    $('#phoneGlyph').removeClass("glyphicon-remove");
+
+    $('#birthdayDiv').removeClass("has-success");
+    $('#birthdayDiv').removeClass("has-error");
+    $('#birthdayGlyph').removeClass("glyphicon-ok");
+    $('#birthdayGlyph').removeClass("glyphicon-remove");
+
+    console.log("Form cleared");
+
     // Show the hidden dialog
     $('#myModal').modal('show');
 }
 
 function validate() {
-    valid_form = true;
+    var valid_form = true;
 
     var firstName = $('#firstName').val();
     var lastName = $('#lastName').val();
@@ -71,7 +107,7 @@ function validate() {
     var phone = $('#phone').val();
     var birthday = $('#birthday').val();
 
-    var nameReg = /^[^\p{L}]{1,30}$/;
+    var nameReg = /^[^{L}]{1,30}$/;
     var emailReg = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     var phoneReg = /^[0-9]{10}$/;
     var birthdayReg = /^(19[0-9][0-9]|20[0-9][0-9])-(0[1-9]|1[1,2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
@@ -219,6 +255,8 @@ function validate() {
         // Put in the field used by screen readers
         $('birthdayStatus').val("(failure)");
     }
+
+    return valid_form;
 }
 //Called when "Save Changes" button is clicked
 function saveChanges() {
@@ -226,39 +264,10 @@ function saveChanges() {
     console.log("Changes Saved");
 }
 
-function clearForm() {
-    $('#firstNameDiv').removeClass("has-success");
-    $('#firstNameDiv').removeClass("has-error");
-    $('#firstNameGlyph').removeClass("glyphicon-ok");
-    $('#firstNameGlyph').removeClass("glyphicon-remove");
-
-    $('#lastNameDiv').removeClass("has-success");
-    $('#lastNameDiv').removeClass("has-error");
-    $('#lastNameGlyph').removeClass("glyphicon-ok");
-    $('#lastNameGlyph').removeClass("glyphicon-remove");
-
-    $('#emailDiv').removeClass("has-success");
-    $('#emailDiv').removeClass("has-error");
-    $('#emailGlyph').removeClass("glyphicon-ok");
-    $('#emailGlyph').removeClass("glyphicon-remove");
-
-    $('#phoneDiv').removeClass("has-success");
-    $('#phoneDiv').removeClass("has-error");
-    $('#phoneGlyph').removeClass("glyphicon-ok");
-    $('#phoneGlyph').removeClass("glyphicon-remove");
-
-    $('#birthdayDiv').removeClass("has-success");
-    $('#birthdayDiv').removeClass("has-error");
-    $('#birthdayGlyph').removeClass("glyphicon-ok");
-    $('#birthdayGlyph').removeClass("glyphicon-remove");
-
-    console.log("Form cleared");
-}
-
 <!-- AJAX Post -->
-function jqueryPostButtonAction() {
+function jqueryPostButtonAdd() {
 
-    if (valid_form == true) {
+    if (validate() == true) {
         var url = "api/name_list_edit";
         var firstName = $("#firstName").val();
         var lastName = $("#lastName").val();
@@ -273,9 +282,29 @@ function jqueryPostButtonAction() {
         $.post(url, dataToServer, function (dataFromServer) {
             console.log("Finished calling servlet.");
             console.log(dataFromServer);
+            clearTable();
+            updateTable();
+            $('#myModal').modal('hide');
         });
     }
     else console.log("Invalid form");
+}
+
+function jqueryPostButtonDelete(e) {
+
+    var url = "api/name_list_delete";
+    var id = e.target.value;
+
+    var dataToServer = {id: id};
+
+    console.log(dataToServer);
+
+    $.post(url, dataToServer, function (dataFromServer) {
+        console.log("Finished calling servlet.");
+        console.log(dataFromServer);
+        clearTable();
+        updateTable();
+    });
 }
 
 // Call your code.
@@ -286,15 +315,6 @@ updateTable();
 var addItemButton = $('#addItem');
 addItemButton.on("click", showDialogAdd);
 
-var addSaveButton = $('#saveChanges');
-addSaveButton.on("click", saveChanges);
-
-var closeButton = $('#close');
-closeButton.on("click", clearForm);
-closeButton.on("click", clearTable);
-closeButton.on("click", updateTable);
-
 var saveButton = $('#saveChanges');
-saveButton.on("click", jqueryPostButtonAction);
-saveButton.on("click", clearTable);
-saveButton.on("click", updateTable);
+saveButton.on("click", saveChanges);
+saveButton.on("click", jqueryPostButtonAdd);
