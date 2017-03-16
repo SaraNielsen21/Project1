@@ -27,13 +27,18 @@ function updateTable() {
             row += '<td>' + email + '</td>';
             row += '<td>' + phoneDash + '</td>';
             row += '<td>' + birthday + '</td>';
-            row += "<td><button type='button' name='deleteButton' class='editButton btn' value='" + id + "'>Delete</button></td>";
+            row += "<td><button type='button' name='editButton' class='editButton btn' value='" + id + "'>Edit</button></td>";
+            row += "<td><button type='button' name='deleteButton' class='deleteButton btn' value='" + id + "'>Delete</button></td>";
             row += '</tr>';
             $('#datatable tbody').append(row);
 
-            var buttons = $(".editButton");
-            buttons.on("click", deleteItem);
-            buttons.on("click", jqueryPostButtonDelete);
+            var deleteButtons = $(".deleteButton");
+            deleteButtons.on("click", deleteItem);
+            deleteButtons.on("click", jqueryPostButtonDelete);
+
+            var editButtons = $(".editButton");
+            editButtons.on("click", editItem);
+            editButtons.on("click", showDialogEdit);
         }
         console.log("Table Updated");
 
@@ -47,6 +52,11 @@ function clearTable() {
 
 function deleteItem(e) {
     console.debug("Delete");
+    console.debug(e.target.value);
+}
+
+function editItem(e) {
+    console.debug("Edit");
     console.debug(e.target.value);
 }
 
@@ -66,6 +76,59 @@ function showDialogAdd() {
     $('#email').val("");
     $('#phone').val("");
     $('#birthday').val("");
+
+    $('#firstNameDiv').removeClass("has-success");
+    $('#firstNameDiv').removeClass("has-error");
+    $('#firstNameGlyph').removeClass("glyphicon-ok");
+    $('#firstNameGlyph').removeClass("glyphicon-remove");
+
+    $('#lastNameDiv').removeClass("has-success");
+    $('#lastNameDiv').removeClass("has-error");
+    $('#lastNameGlyph').removeClass("glyphicon-ok");
+    $('#lastNameGlyph').removeClass("glyphicon-remove");
+
+    $('#emailDiv').removeClass("has-success");
+    $('#emailDiv').removeClass("has-error");
+    $('#emailGlyph').removeClass("glyphicon-ok");
+    $('#emailGlyph').removeClass("glyphicon-remove");
+
+    $('#phoneDiv').removeClass("has-success");
+    $('#phoneDiv').removeClass("has-error");
+    $('#phoneGlyph').removeClass("glyphicon-ok");
+    $('#phoneGlyph').removeClass("glyphicon-remove");
+
+    $('#birthdayDiv').removeClass("has-success");
+    $('#birthdayDiv').removeClass("has-error");
+    $('#birthdayGlyph').removeClass("glyphicon-ok");
+    $('#birthdayGlyph').removeClass("glyphicon-remove");
+
+    console.log("Form cleared");
+
+    // Show the hidden dialog
+    $('#myModal').modal('show');
+}
+
+// Called when "Edit Item" button is clicked
+function showDialogEdit(e) {
+
+    // Print that we got here
+    console.log("Opening edit item dialog");
+
+    //Grab values for field
+    var id = e.target.value;
+    var firstName =  e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML;
+    var lastName = e.target.parentNode.parentNode.querySelectorAll("td")[2].innerHTML;
+    var email = e.target.parentNode.parentNode.querySelectorAll("td")[3].innerHTML;
+    var phone = e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML;
+    phone = phone.split("-").join("");
+    var birthday = e.target.parentNode.parentNode.querySelectorAll("td")[5].innerHTML;
+
+    $('#id').val(id);
+    $('#firstName').val(firstName);
+    $('#lastName').val(lastName);
+    $('#email').val(email);
+    $('#phone').val(phone);
+    $('#birthday').val(birthday);
 
     $('#firstNameDiv').removeClass("has-success");
     $('#firstNameDiv').removeClass("has-error");
@@ -269,13 +332,14 @@ function jqueryPostButtonAdd() {
 
     if (validate() == true) {
         var url = "api/name_list_edit";
+        var id = $("#id").val();
         var firstName = $("#firstName").val();
         var lastName = $("#lastName").val();
         var email = $("#email").val();
         var phone = $("#phone").val();
         var birthday = $("#birthday").val();
 
-        var dataToServer = {firstName: firstName, lastName: lastName, email: email, phone: phone, birthday: birthday};
+        var dataToServer = {id : id, firstName: firstName, lastName: lastName, email: email, phone: phone, birthday: birthday};
 
         console.log(dataToServer);
 

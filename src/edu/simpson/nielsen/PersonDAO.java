@@ -83,7 +83,7 @@ public class PersonDAO {
         return list;
     }
 
-    public static void addPeople(Person person)
+    public static void addPerson(Person person)
     {
         final Logger log = Logger.getLogger(PersonDAO.class.getName());
         log.log(Level.FINE, "Add people");
@@ -144,6 +144,46 @@ public class PersonDAO {
 
             //set parameters
             stmt.setString(1,id);
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { stmt.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+            try { conn.close(); } catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+    }
+
+    public static void editPerson(Person person)
+    {
+        final Logger log = Logger.getLogger(PersonDAO.class.getName());
+        log.log(Level.FINE, "Edit people");
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try{
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // String for our sql query
+            String sql = "update cis320.person set first = ?, last = ?, email = ?, phone = ?, birthday = ? where id = ?";
+
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+
+            //set parameters
+            stmt.setString(1,person.getFirst());
+            stmt.setString(2,person.getLast());
+            stmt.setString(3,person.getEmail());
+            stmt.setString(4,person.getPhone());
+            stmt.setString(5,person.getBirthday());
+            stmt.setString(6, Integer.toString(person.getId()));
 
             // Execute the SQL and get the results
             stmt.executeUpdate();
