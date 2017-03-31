@@ -32,4 +32,35 @@
         <servlet-name>NameListDelete</servlet-name>
         <url-pattern>/api/name_list_delete</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SetLogin</servlet-name>
+        <servlet-class>edu.simpson.nielsen.SetLogin</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>SetLogin</servlet-name>
+        <url-pattern>/api/set_login_servlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetLogin</servlet-name>
+        <servlet-class>edu.simpson.nielsen.GetLogin</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetLogin</servlet-name>
+        <url-pattern>/api/get_login_servlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>edu.simpson.nielsen.Logout</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/api/logout_servlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>

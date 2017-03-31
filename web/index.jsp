@@ -42,6 +42,7 @@
         <li><a href="javascript_assignment.html">Javascript Assignment</a></li>
         <li><a href="api/name_list_get">Name List JSON</a></li>
         <li><a href="name_list.html">Name List</a></li>
+        <li><a href="login.html">Login</a></li>
       </ul>
     </div>
   </div>
